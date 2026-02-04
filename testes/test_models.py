@@ -6,14 +6,16 @@ import pytest
 from pydantic import ValidationError
 
 def test_product_model_valid():
-    p = Product(name="Camiseta", price=29.90, stock=10)
+    # Adicionei o sku="TS-001" para satisfazer o novo requisito
+    p = Product(name="Camiseta", sku="TS-001", price=29.90, stock=10)
     assert p.name == "Camiseta"
+    assert p.sku == "TS-001" # Validação do novo campo
     assert p.price == 29.90
     assert p.description is None
 
 def test_product_model_invalid():
     with pytest.raises(ValidationError):
-        Product(name="Camiseta", price="invalid", stock=10)
+        Product(name="Camiseta", sku="TS-002", price="invalid", stock=10)
 
 def test_login_payload():
     l = LoginPayload(username="user", password="123")
