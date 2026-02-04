@@ -19,10 +19,21 @@ def test_index(client):
     assert rv.status_code == 200
     assert rv.json == {"message": "Bem-vindo à API da StyleSync!"}
 
-def test_login(client):
-    rv = client.post('/login')
+def test_login_success(client):
+    rv = client.post('/login', json={"username": "admin", "password": "123"})
     assert rv.status_code == 200
-    assert rv.json == {"message": "Realizar o login"}
+    assert rv.json == {"message": "Login bem-sucedido!"}
+
+def test_login_invalid_credentials(client):
+    rv = client.post('/login', json={"username": "admin", "password": "wrong"})
+    assert rv.status_code == 401
+    assert rv.json == {"message": "Credenciais invalidas!"}
+
+def test_login_missing_field(client):
+    rv = client.post('/login', json={"username": "admin"})
+    assert rv.status_code == 400
+    # Valida se contem estrutura de erro do Pydantic
+    assert "error" in rv.json
 
 def test_get_products(client):
     rv = client.get('/products')

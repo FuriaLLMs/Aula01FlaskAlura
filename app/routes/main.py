@@ -1,4 +1,6 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
+from pydantic import ValidationError
+from app.models.user import LoginPayload
 
 main_bp = Blueprint('main_bp', __name__)
 
@@ -9,7 +11,28 @@ def index():
 # RF: O sistema deve permitir que um usuário se autentique para obter um token
 @main_bp.route('/login', methods=['POST'])
 def login():
-    return jsonify({"message": "Realizar o login"})
+    try:
+        # 1. Captura os dados enviados na requisição (JSON)
+        raw_data = request.get_json()
+        
+        # 2. Valida os dados usando o Pydantic (LoginPayload)
+        # O **raw_data desempacota o dicionário para preencher a classe
+        user_data = LoginPayload(**raw_data)
+
+        # 3. Simula a verificação de credenciais (Hardcoded conforme a aula)
+        if user_data.username == 'admin' and user_data.password == '123':
+            return jsonify({"message": "Login bem-sucedido!"})
+        else:
+            # Retorna 401 (Não Autorizado) se a senha estiver errada
+            return jsonify({"message": "Credenciais invalidas!"}), 401
+
+    except ValidationError as e:
+        # 4. Retorna erro 400 se os dados não seguirem o modelo (ex: faltou senha)
+        return jsonify({"error": e.errors()}), 400
+        
+    except Exception as e:
+        # Retorna erro 500 para qualquer outro problema interno
+        return jsonify({"error": "Erro durante a requisição do dado"}), 500
 
 # RF: O sistema deve permitir listagem de todos os produtos
 @main_bp.route('/products', methods=['GET'])
