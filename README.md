@@ -17,8 +17,8 @@ Pré-requisitos: Python 3.10+ instalado.
 
 1.  **Clone o repositório** (se ainda não o fez):
     ```bash
-    git clone https://github.com/FuriaLLMs/Aula01FlaskAlura.git
-    cd Aula01FlaskAlura
+    git clone https://github.com/FuriaLLMs/stylesync-backend-api.git
+    cd stylesync-backend-api
     ```
 
 2.  **Crie e ative um ambiente virtual** (recomendado):
