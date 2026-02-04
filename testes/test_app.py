@@ -17,7 +17,7 @@ def client():
 def test_index(client):
     rv = client.get('/')
     assert rv.status_code == 200
-    assert rv.json == {"message": "Bem vindo ao Stylesync!"}
+    assert rv.json == {"message": "Bem-vindo à API da StyleSync!"}
 
 def test_products(client):
     rv = client.get('/products')

@@ -4,7 +4,7 @@ main_bp = Blueprint('main_bp', __name__)
 
 @main_bp.route('/')
 def index():
-    return jsonify({"message": "Bem vindo ao Stylesync!"})
+    return jsonify({"message": "Bem-vindo à API da StyleSync!"})
 
 @main_bp.route('/products')
 def get_products():
